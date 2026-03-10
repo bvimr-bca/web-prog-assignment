@@ -913,7 +913,7 @@ option { background: var(--surface2); }
   </div>
   <div class="nav-actions">
     <div class="nav-icon-btn" onclick="showToast('Wishlist','0 saved items')">♡</div>
-    <div class="nav-icon-btn" onclick="go('cart')">
+    <div class="nav-icon-btn" onclick="openCart()">
       🛒
       <span class="cart-count" id="cart-count">0</span>
     </div>
@@ -930,7 +930,7 @@ option { background: var(--surface2); }
     <div class="mobile-nav-link" onclick="go('shop');toggleMobileNav()"><span class="mobile-nav-icon">◈</span>Shop</div>
     <div class="mobile-nav-link" onclick="showToast('Drops','Coming Friday');toggleMobileNav()"><span class="mobile-nav-icon">✦</span>Drops</div>
     <div class="mobile-nav-link" onclick="showToast('Wishlist','0 saved items');toggleMobileNav()"><span class="mobile-nav-icon">♡</span>Wishlist</div>
-    <div class="mobile-nav-link" onclick="go('cart');toggleMobileNav()"><span class="mobile-nav-icon">🛒</span>Cart</div>
+    <div class="mobile-nav-link" onclick="openCart();toggleMobileNav()"><span class="mobile-nav-icon">🛒</span>Cart</div>
     <div class="mobile-nav-link" onclick="showToast('Account','Sign in first');toggleMobileNav()"><span class="mobile-nav-icon">◌</span>Account</div>
   </div>
 </div>
@@ -1273,121 +1273,8 @@ option { background: var(--surface2); }
   </div>
 </div>
 
-<!-- ── CART PAGE ── -->
-<div class="page" id="page-cart">
-  <div class="page-wrap">
-    <div style="margin-bottom:32px">
-      <div class="section-label">Shopping Cart</div>
-      <div class="section-title" style="margin-bottom:24px">Your Items</div>
-      
-      <!-- Action Buttons -->
-      <div style="display:flex;gap:12px;margin-bottom:28px;flex-wrap:wrap">
-        <button class="btn btn-primary" onclick="closeCart();go('shop')">+ Add Items</button>
-        <button class="btn btn-outline" onclick="openModifyModal()">✎ Modify Items</button>
-        <button class="btn" style="background:rgba(255,77,106,0.1);color:var(--red);border:1px solid rgba(255,77,106,0.2)" onclick="clearAllCart()">✕ Clear Cart</button>
-      </div>
-
-      <!-- Cart Grid -->
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden">
-        <div style="overflow-x:auto">
-          <table style="width:100%;border-collapse:collapse;font-family:'Syne',sans-serif">
-            <thead>
-              <tr style="background:var(--surface2);border-bottom:1px solid var(--border)">
-                <th style="padding:16px;text-align:left;font-size:12px;font-weight:700;color:var(--text-muted);letter-spacing:0.05em;text-transform:uppercase">Sr. No.</th>
-                <th style="padding:16px;text-align:left;font-size:12px;font-weight:700;color:var(--text-muted);letter-spacing:0.05em;text-transform:uppercase">Particular</th>
-                <th style="padding:16px;text-align:left;font-size:12px;font-weight:700;color:var(--text-muted);letter-spacing:0.05em;text-transform:uppercase">Code</th>
-                <th style="padding:16px;text-align:center;font-size:12px;font-weight:700;color:var(--text-muted);letter-spacing:0.05em;text-transform:uppercase">Qty</th>
-                <th style="padding:16px;text-align:right;font-size:12px;font-weight:700;color:var(--text-muted);letter-spacing:0.05em;text-transform:uppercase">Price</th>
-                <th style="padding:16px;text-align:right;font-size:12px;font-weight:700;color:var(--text-muted);letter-spacing:0.05em;text-transform:uppercase">GST (8.5%)</th>
-                <th style="padding:16px;text-align:right;font-size:12px;font-weight:700;color:var(--text-muted);letter-spacing:0.05em;text-transform:uppercase">Total</th>
-                <th style="padding:16px;text-align:center;font-size:12px;font-weight:700;color:var(--text-muted);letter-spacing:0.05em;text-transform:uppercase">Action</th>
-              </tr>
-            </thead>
-            <tbody id="cart-table-body">
-            </tbody>
-          </table>
-        </div>
-        <div id="cart-empty-msg" style="padding:40px;text-align:center;color:var(--text-muted)">
-          <div style="font-size:48px;margin-bottom:16px">🛒</div>
-          <div style="font-size:16px;font-weight:700;margin-bottom:8px;color:var(--text)">Your cart is empty</div>
-          <div style="font-family:'DM Mono',monospace;font-size:12px;margin-bottom:20px">Add items to get started</div>
-          <button class="btn btn-primary" onclick="closeCart();go('shop')">Shop Now →</button>
-        </div>
-      </div>
-
-      <!-- Cart Summary -->
-      <div style="display:grid;grid-template-columns:1fr 300px;gap:24px;margin-top:24px;align-items:start">
-        <div></div>
-        <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px">
-          <div style="font-size:13px;font-weight:700;margin-bottom:16px">Summary</div>
-          <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:10px">
-            <span style="color:var(--text-muted)">Subtotal</span>
-            <span style="font-family:'DM Mono',monospace;font-weight:500" id="cart-pg-subtotal">₹0</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:10px">
-            <span style="color:var(--text-muted)">GST (8.5%)</span>
-            <span style="font-family:'DM Mono',monospace;font-weight:500" id="cart-pg-gst">₹0</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--border)">
-            <span style="color:var(--text-muted)">Shipping</span>
-            <span style="font-family:'DM Mono',monospace;font-weight:500">₹499</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;font-size:16px;font-weight:800;margin-bottom:20px">
-            <span>Grand Total</span>
-            <span style="font-family:'DM Mono',monospace;color:var(--accent)" id="cart-pg-total">₹0</span>
-          </div>
-          <button class="checkout-btn" onclick="go('checkout')">Proceed to Checkout →</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- ── CHECKOUT ── -->
 <div class="page" id="page-checkout">
-  <!-- Item Selection Section -->
-  <div style="max-width:1100px;margin:0 auto;padding:40px 28px 0;border-bottom:1px solid var(--border)">
-    <div class="checkout-step-head"><div class="step-num">0</div><div class="step-label">Add Items</div></div>
-    
-    <div class="form-block" style="margin-bottom:24px">
-      <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr auto;gap:14px;align-items:flex-end;margin-bottom:16px">
-        <div class="form-group">
-          <label class="form-label">Select Particular</label>
-          <select class="form-select" id="checkout-particular" style="width:100%">
-            <option value="">— Choose a product —</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Code</label>
-          <input class="form-input" type="text" id="checkout-code" readonly style="background:var(--surface3);cursor:not-allowed">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Quantity</label>
-          <input class="form-input" type="number" id="checkout-qty" value="1" min="1">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Price</label>
-          <input class="form-input" type="text" id="checkout-price" readonly style="background:var(--surface3);cursor:not-allowed">
-        </div>
-        <button class="btn btn-primary" onclick="addCheckoutItem()" style="margin-top:2px">+ Add</button>
-      </div>
-
-      <div style="display:flex;gap:10px;flex-wrap:wrap">
-        <button class="btn btn-outline" onclick="openModifyCheckoutModal()" style="padding:10px 16px;font-size:13px">✎ Modify</button>
-        <button class="btn" style="background:rgba(255,77,106,0.1);color:var(--red);border:1px solid rgba(255,77,106,0.2);padding:10px 16px;font-size:13px" onclick="clearCheckoutItems()">✕ Clear</button>
-      </div>
-    </div>
-
-    <!-- Added Items Display -->
-    <div id="checkout-items-display" style="margin-bottom:24px">
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;text-align:center;color:var(--text-muted)">
-        <div style="font-size:32px;margin-bottom:12px">📦</div>
-        <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px">No items added yet</div>
-        <div style="font-family:'DM Mono',monospace;font-size:11px">Select a product above to add items</div>
-      </div>
-    </div>
-  </div>
-
   <div class="checkout-layout">
     <div>
       <!-- Contact -->
@@ -1515,18 +1402,18 @@ option { background: var(--surface2); }
 <script>
 // ─── DATA ─────────────────────────────────────────────
 const allProducts = [
-  { id:1, name:'AirDrop Pro X', cat:'Audio', code:'AU-001', icon:'🎧', price:12499, old:16699, rating:4.9, reviews:312, badge:'sale', desc:'40h ANC headphones with spatial audio.' },
-  { id:2, name:'MechBase TKL', cat:'Input', code:'IP-002', icon:'⌨️', price:15799, old:null, rating:4.8, reviews:156, badge:'new', desc:'Hot-swap mechanical keyboard, aluminum chassis.' },
-  { id:3, name:'LumiStrip Pro', cat:'Lighting', code:'LT-003', icon:'💡', price:6699, old:null, rating:4.7, reviews:89, badge:'hot', desc:'Addressable RGBIC strip, Matter-compatible.' },
-  { id:4, name:'MagCharge 45W', cat:'Power', code:'PW-004', icon:'🔋', price:4199, old:5849, rating:4.6, reviews:204, badge:'sale', desc:'GaN fast charger, dual USB-C + USB-A.' },
-  { id:5, name:'FocusCam 4K', cat:'Video', code:'VD-005', icon:'📷', price:9999, old:null, rating:4.9, reviews:73, badge:'new', desc:'4K60 webcam with AI framing.' },
-  { id:6, name:'DeskPad XL', cat:'Input', code:'IP-006', icon:'🖱️', price:3349, old:null, rating:4.5, reviews:441, badge:null, desc:'Full-desk seamless mousePad, stitched edges.' },
-  { id:7, name:'NanoEarPods', cat:'Audio', code:'AU-007', icon:'🎵', price:7449, old:9099, rating:4.7, reviews:198, badge:'sale', desc:'True wireless, 32h total with case.' },
-  { id:8, name:'HubCore 10-in-1', cat:'Power', code:'PW-008', icon:'🔌', price:5849, old:null, rating:4.8, reviews:117, badge:'hot', desc:'USB4 dock, 100W PD, 8K HDMI.' },
-  { id:9, name:'ProStand Mag', cat:'Mobile', code:'MB-009', icon:'📱', price:2999, old:null, rating:4.6, reviews:88, badge:'new', desc:'MagSafe-compatible adjustable stand.' },
-  { id:10, name:'ArcLight Lamp', cat:'Lighting', code:'LT-010', icon:'🌙', price:8349, old:10849, rating:4.9, reviews:62, badge:'sale', desc:'Circadian rhythm smart desk lamp.' },
-  { id:11, name:'SlimCase 16', cat:'Mobile', code:'MB-011', icon:'💻', price:2499, old:null, rating:4.4, reviews:305, badge:null, desc:'Frosted polycarbonate with MagSafe cutouts.' },
-  { id:12, name:'BraideX Cable', cat:'Power', code:'PW-012', icon:'⚡', price:1249, old:null, rating:4.3, reviews:520, badge:null, desc:'Kevlar-braided USB-C, 240W, 2m.' },
+  { id:1, name:'AirDrop Pro X', cat:'Audio', icon:'🎧', price:12499, old:16699, rating:4.9, reviews:312, badge:'sale', desc:'40h ANC headphones with spatial audio.' },
+  { id:2, name:'MechBase TKL', cat:'Input', icon:'⌨️', price:15799, old:null, rating:4.8, reviews:156, badge:'new', desc:'Hot-swap mechanical keyboard, aluminum chassis.' },
+  { id:3, name:'LumiStrip Pro', cat:'Lighting', icon:'💡', price:6699, old:null, rating:4.7, reviews:89, badge:'hot', desc:'Addressable RGBIC strip, Matter-compatible.' },
+  { id:4, name:'MagCharge 45W', cat:'Power', icon:'🔋', price:4199, old:5849, rating:4.6, reviews:204, badge:'sale', desc:'GaN fast charger, dual USB-C + USB-A.' },
+  { id:5, name:'FocusCam 4K', cat:'Video', icon:'📷', price:9999, old:null, rating:4.9, reviews:73, badge:'new', desc:'4K60 webcam with AI framing.' },
+  { id:6, name:'DeskPad XL', cat:'Input', icon:'🖱️', price:3349, old:null, rating:4.5, reviews:441, badge:null, desc:'Full-desk seamless mousePad, stitched edges.' },
+  { id:7, name:'NanoEarPods', cat:'Audio', icon:'🎵', price:7449, old:9099, rating:4.7, reviews:198, badge:'sale', desc:'True wireless, 32h total with case.' },
+  { id:8, name:'HubCore 10-in-1', cat:'Power', icon:'🔌', price:5849, old:null, rating:4.8, reviews:117, badge:'hot', desc:'USB4 dock, 100W PD, 8K HDMI.' },
+  { id:9, name:'ProStand Mag', cat:'Mobile', icon:'📱', price:2999, old:null, rating:4.6, reviews:88, badge:'new', desc:'MagSafe-compatible adjustable stand.' },
+  { id:10, name:'ArcLight Lamp', cat:'Lighting', icon:'🌙', price:8349, old:10849, rating:4.9, reviews:62, badge:'sale', desc:'Circadian rhythm smart desk lamp.' },
+  { id:11, name:'SlimCase 16', cat:'Mobile', icon:'💻', price:2499, old:null, rating:4.4, reviews:305, badge:null, desc:'Frosted polycarbonate with MagSafe cutouts.' },
+  { id:12, name:'BraideX Cable', cat:'Power', icon:'⚡', price:1249, old:null, rating:4.3, reviews:520, badge:null, desc:'Kevlar-braided USB-C, 240W, 2m.' },
 ];
 
 let cart = [];
@@ -1534,7 +1421,6 @@ let currentProduct = allProducts[0];
 
 // ─── NAVIGATION ────────────────────────────────────────
 function go(page) {
-  closeCart();
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-'+page).classList.add('active');
   document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
@@ -1542,12 +1428,7 @@ function go(page) {
   if (nm[page] !== undefined) document.querySelectorAll('.nav-link')[nm[page]]?.classList.add('active');
   document.querySelectorAll('.mobile-nav-link').forEach(l => l.classList.remove('active'));
   window.scrollTo({ top: 0, behavior: 'smooth' });
-  if (page === 'checkout') {
-    renderCheckout();
-    initCheckoutParticular();
-    renderCheckoutItems();
-  }
-  if (page === 'cart') renderCartPage();
+  if (page === 'checkout') renderCheckout();
 }
 
 // ─── RENDER PRODUCTS ───────────────────────────────────
@@ -1613,7 +1494,7 @@ function addCurrentToCart() {
   if (existing) existing.qty += qty;
   else cart.push({ ...currentProduct, qty });
   updateCartUI();
-  go('cart');
+  openCart();
 }
 
 function removeFromCart(id) {
@@ -1668,149 +1549,6 @@ function openCart() { document.getElementById('cart-sidebar').classList.add('ope
 function closeCart() { document.getElementById('cart-sidebar').classList.remove('open'); document.getElementById('cart-overlay').classList.remove('open'); }
 
 // ─── CHECKOUT ──────────────────────────────────────────
-// ─── CHECKOUT ITEM SELECTION ────────────────────────────
-let checkoutItems = [];
-
-function initCheckoutParticular() {
-  const select = document.getElementById('checkout-particular');
-  if (!select) return;
-  select.innerHTML = '<option value="">— Choose a product —</option>' + 
-    allProducts.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
-  select.onchange = () => populateCheckoutFields();
-}
-
-function populateCheckoutFields() {
-  const select = document.getElementById('checkout-particular');
-  const productId = select.value;
-  const codeInput = document.getElementById('checkout-code');
-  const priceInput = document.getElementById('checkout-price');
-  const qtyInput = document.getElementById('checkout-qty');
-  
-  if (!productId) {
-    codeInput.value = '';
-    priceInput.value = '';
-    qtyInput.value = 1;
-    return;
-  }
-  
-  const product = allProducts.find(p => p.id == productId);
-  if (product) {
-    codeInput.value = product.code || 'PROD-' + String(product.id).padStart(3, '0');
-    priceInput.value = '₹' + product.price.toLocaleString('en-IN');
-    qtyInput.value = 1;
-  }
-}
-
-function addCheckoutItem() {
-  const select = document.getElementById('checkout-particular');
-  const qtyInput = document.getElementById('checkout-qty');
-  const productId = select.value;
-  const qty = parseInt(qtyInput.value) || 1;
-  
-  if (!productId) {
-    alert('Please select a product');
-    return;
-  }
-  
-  const product = allProducts.find(p => p.id == productId);
-  if (!product) return;
-  
-  const existing = checkoutItems.find(i => i.id == productId);
-  if (existing) {
-    existing.qty += qty;
-  } else {
-    checkoutItems.push({ ...product, qty });
-  }
-  
-  select.value = '';
-  qtyInput.value = 1;
-  document.getElementById('checkout-code').value = '';
-  document.getElementById('checkout-price').value = '';
-  
-  renderCheckoutItems();
-  showToast(product.name + ' added', 'Qty: ' + qty);
-}
-
-function renderCheckoutItems() {
-  const display = document.getElementById('checkout-items-display');
-  
-  if (checkoutItems.length === 0) {
-    display.innerHTML = `
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;text-align:center;color:var(--text-muted)">
-      <div style="font-size:32px;margin-bottom:12px">📦</div>
-      <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px">No items added yet</div>
-      <div style="font-family:'DM Mono',monospace;font-size:11px">Select a product above to add items</div>
-    </div>`;
-    return;
-  }
-  
-  display.innerHTML = `
-  <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden">
-    <div style="overflow-x:auto">
-      <table style="width:100%;border-collapse:collapse">
-        <thead>
-          <tr style="background:var(--surface2);border-bottom:1px solid var(--border)">
-            <th style="padding:12px;text-align:left;font-size:11px;font-weight:700;color:var(--text-muted);letter-spacing:0.05em;text-transform:uppercase;font-family:'DM Mono',monospace">Particular</th>
-            <th style="padding:12px;text-align:left;font-size:11px;font-weight:700;color:var(--text-muted);letter-spacing:0.05em;text-transform:uppercase;font-family:'DM Mono',monospace">Code</th>
-            <th style="padding:12px;text-align:center;font-size:11px;font-weight:700;color:var(--text-muted);letter-spacing:0.05em;text-transform:uppercase;font-family:'DM Mono',monospace">Qty</th>
-            <th style="padding:12px;text-align:right;font-size:11px;font-weight:700;color:var(--text-muted);letter-spacing:0.05em;text-transform:uppercase;font-family:'DM Mono',monospace">Price</th>
-            <th style="padding:12px;text-align:right;font-size:11px;font-weight:700;color:var(--text-muted);letter-spacing:0.05em;text-transform:uppercase;font-family:'DM Mono',monospace">Total</th>
-            <th style="padding:12px;text-align:center;font-size:11px;font-weight:700;color:var(--text-muted);letter-spacing:0.05em;text-transform:uppercase;font-family:'DM Mono',monospace">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${checkoutItems.map((item, idx) => {
-            const total = item.price * item.qty;
-            return `
-            <tr style="border-bottom:1px solid var(--border)">
-              <td style="padding:12px;font-size:13px"><strong>${item.name}</strong></td>
-              <td style="padding:12px;font-size:11px;font-family:'DM Mono',monospace;color:var(--text-muted)">${item.code || 'PROD-' + String(item.id).padStart(3, '0')}</td>
-              <td style="padding:12px;text-align:center;font-size:13px"><input type="number" value="${item.qty}" min="1" style="width:50px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--text);padding:6px;text-align:center;outline:none" onchange="updateCheckoutQty(${item.id}, parseInt(this.value))"></td>
-              <td style="padding:12px;text-align:right;font-family:'DM Mono',monospace;font-size:12px;color:var(--text)">₹${item.price.toLocaleString('en-IN')}</td>
-              <td style="padding:12px;text-align:right;font-family:'DM Mono',monospace;font-weight:700;color:var(--accent)">₹${total.toLocaleString('en-IN')}</td>
-              <td style="padding:12px;text-align:center"><button onclick="removeCheckoutItem(${item.id})" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:14px;opacity:0.7;transition:opacity 0.15s" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">✕</button></td>
-            </tr>`;
-          }).join('')}
-        </tbody>
-      </table>
-    </div>
-  </div>`;
-}
-
-function updateCheckoutQty(id, newQty) {
-  if (newQty < 1) newQty = 1;
-  const item = checkoutItems.find(i => i.id == id);
-  if (item) {
-    item.qty = newQty;
-    renderCheckoutItems();
-  }
-}
-
-function removeCheckoutItem(id) {
-  checkoutItems = checkoutItems.filter(i => i.id != id);
-  renderCheckoutItems();
-}
-
-function openModifyCheckoutModal() {
-  if (checkoutItems.length === 0) {
-    showToast('No items to modify', 'Add items first using the selector above');
-    return;
-  }
-  showToast('Modify Items', 'Use the quantity inputs above to modify quantities');
-}
-
-function clearCheckoutItems() {
-  if (checkoutItems.length === 0) {
-    showToast('No items', 'Nothing to clear');
-    return;
-  }
-  if (confirm('Clear all added items?')) {
-    checkoutItems = [];
-    renderCheckoutItems();
-    showToast('Items cleared', 'Start fresh by selecting products above');
-  }
-}
-
 function renderCheckout() {
   const items = document.getElementById('checkout-items');
   if (cart.length === 0) {
@@ -1913,80 +1651,8 @@ function showToast(msg, sub) {
   toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
 }
 
-// ─── CART PAGE ─────────────────────────────────────────
-function renderCartPage() {
-  const tableBody = document.getElementById('cart-table-body');
-  const emptyMsg = document.getElementById('cart-empty-msg');
-  const table = tableBody?.parentElement?.parentElement;
-  
-  if (cart.length === 0) {
-    if (table) table.style.display = 'none';
-    if (emptyMsg) emptyMsg.style.display = 'block';
-    return;
-  }
-  
-  if (table) table.style.display = 'block';
-  if (emptyMsg) emptyMsg.style.display = 'none';
-  
-  tableBody.innerHTML = cart.map((item, idx) => {
-    const price = item.price * item.qty;
-    const gst = Math.round(price * 0.085);
-    const total = price + gst;
-    const itemCode = 'IT-' + String(item.id).padStart(4, '0');
-    return `
-    <tr style="border-bottom:1px solid var(--border);transition:background 0.15s">
-      <td style="padding:16px;font-size:13px;color:var(--text-muted);font-family:'DM Mono',monospace">${idx + 1}</td>
-      <td style="padding:16px;font-size:13px;color:var(--text)"><strong>${item.name}</strong><br><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text-muted)">${item.cat}</span></td>
-      <td style="padding:16px;font-size:12px;font-family:'DM Mono',monospace;color:var(--text-muted)">${itemCode}</td>
-      <td style="padding:16px;text-align:center;font-size:13px"><input type="number" value="${item.qty}" min="1" style="width:50px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--text);padding:6px;text-align:center;outline:none" onchange="updateCartQtyDirect(${item.id}, parseInt(this.value))"></td>
-      <td style="padding:16px;text-align:right;font-family:'DM Mono',monospace;font-size:13px;color:var(--text)">₹${price.toLocaleString('en-IN')}</td>
-      <td style="padding:16px;text-align:right;font-family:'DM Mono',monospace;font-size:13px;color:var(--text-muted)">₹${gst.toLocaleString('en-IN')}</td>
-      <td style="padding:16px;text-align:right;font-family:'DM Mono',monospace;font-size:13px;font-weight:700;color:var(--accent)">₹${total.toLocaleString('en-IN')}</td>
-      <td style="padding:16px;text-align:center"><button onclick="removeFromCart(${item.id})" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:16px;opacity:0.7;transition:opacity 0.15s" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">✕</button></td>
-    </tr>`;
-  }).join('');
-  
-  // Update summary
-  const subtotal = cart.reduce((s,i) => s + i.price * i.qty, 0);
-  const gst = Math.round(subtotal * 0.085);
-  const grandTotal = subtotal + gst + 499;
-  
-  document.getElementById('cart-pg-subtotal').textContent = '₹' + subtotal.toLocaleString('en-IN');
-  document.getElementById('cart-pg-gst').textContent = '₹' + gst.toLocaleString('en-IN');
-  document.getElementById('cart-pg-total').textContent = '₹' + grandTotal.toLocaleString('en-IN');
-}
-
-function updateCartQtyDirect(id, newQty) {
-  if (newQty < 1) newQty = 1;
-  const item = cart.find(i => i.id === id);
-  if (item) {
-    item.qty = newQty;
-    updateCartUI();
-    renderCartPage();
-  }
-}
-
-function openModifyModal() {
-  showToast('Modify Items', 'Use the quantity inputs above to modify quantities, or remove items');
-}
-
-function clearAllCart() {
-  if (cart.length === 0) {
-    showToast('Cart Empty', 'Nothing to clear');
-    return;
-  }
-  if (confirm('Are you sure you want to clear all items from your cart?')) {
-    cart = [];
-    updateCartUI();
-    renderCartPage();
-    showToast('Cart Cleared', 'Your cart is now empty');
-  }
-}
-
-// ─── INIT IN go() ─────────────────────────────────────
+// ─── INIT ────────────────────────────────────────────────
 renderGrids();
-
-
 </script>
 </body>
 </html>

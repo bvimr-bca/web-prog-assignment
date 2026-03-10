@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Management — VLTX Store</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0b;
+  --surface: #111113;
+  --surface2: #18181c;
+  --surface3: #1f1f25;
+  --border: #222228;
+  --border-light: #2e2e38;
+  --text: #f0f0f4;
+  --text-muted: #6b6b80;
+  --text-dim: #3a3a48;
+  --accent: #b8ff57;
+  --accent-dim: rgba(184,255,87,0.08);
+  --accent-glow: rgba(184,255,87,0.18);
+  --red: #ff4d6a;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Syne', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.navbar {
+  position: sticky; top: 0; z-index: 200;
+  background: rgba(10,10,11,0.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  height: 64px;
+  display: flex; align-items: center;
+  padding: 0 28px;
+  gap: 24px;
+}
+
+.nav-logo {
+  font-size: 18px; font-weight: 800; letter-spacing: -0.5px;
+  cursor: pointer; flex-shrink: 0;
+}
+
+.nav-logo span { color: var(--accent); }
+
+.nav-links {
+  display: flex; gap: 4px;
+  margin-left: auto;
+}
+
+.nav-link {
+  font-size: 13px; font-weight: 600;
+  color: var(--text-muted);
+  padding: 6px 12px;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: all 0.15s;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+
+.nav-link:hover { color: var(--text); background: var(--surface2); }
+.nav-link.active { color: var(--accent); background: var(--accent-dim); border-color: rgba(184,255,87,0.15); }
+
+.page-wrap { max-width: 1300px; margin: 0 auto; padding: 40px 28px; }
+
+.section-label {
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 6px;
+}
+
+.section-title { font-size: 28px; font-weight: 800; letter-spacing: -0.8px; margin-bottom: 24px; }
+
+.data-table {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  border-collapse: collapse;
+}
+
+.data-table thead {
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border);
+}
+
+.data-table th {
+  padding: 16px;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-family: 'DM Mono', monospace;
+}
+
+.data-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+
+.data-table tbody tr:hover {
+  background: var(--surface2);
+  transition: background 0.15s;
+}
+
+.data-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.badge-new { background: var(--accent-dim); color: var(--accent); }
+.badge-sale { background: rgba(255,77,106,0.15); color: var(--red); }
+.badge-hot { background: rgba(255,179,71,0.15); color: #ffb347; }
+
+.price-cell {
+  font-family: 'DM Mono', monospace;
+  font-weight: 500;
+  color: var(--accent);
+}
+
+.cat-cell {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.code-cell {
+  font-family: 'DM Mono', monospace;
+  color: var(--text-muted);
+  font-size: 11px;
+}
+
+.icon-cell { font-size: 20px; }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-logo">VL<span>T</span>X — Data</div>
+  <div class="nav-links">
+    <div class="nav-link" onclick="window.location='ecommerce(1).html'">← Back to Store</div>
+    <a href="#products" class="nav-link active">Products</a>
+  </div>
+</nav>
+
+<div class="page-wrap">
+  <div id="products">
+    <div class="section-label">Database</div>
+    <div class="section-title">Product Catalog</div>
+    
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th style="width:5%">ID</th>
+          <th style="width:5%">Icon</th>
+          <th style="width:20%">Name</th>
+          <th style="width:10%">Code</th>
+          <th style="width:12%">Category</th>
+          <th style="width:12%">Price</th>
+          <th style="width:10%">Stock</th>
+          <th style="width:10%">Badge</th>
+          <th style="width:6%">Rating</th>
+        </tr>
+      </thead>
+      <tbody id="data-table-body">
+      </tbody>
+    </table>
+  </div>
+
+  <div style="margin-top:60px">
+    <div class="section-label">Statistics</div>
+    <div class="section-title">Inventory Overview</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px">
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px">
+        <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text-muted);text-transform:uppercase;margin-bottom:8px">Total Products</div>
+        <div style="font-size:32px;font-weight:800;color:var(--accent)" id="stat-products">0</div>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px">
+        <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text-muted);text-transform:uppercase;margin-bottom:8px">Total Value (est.)</div>
+        <div style="font-size:32px;font-weight:800;color:var(--accent)" id="stat-value">₹0</div>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px">
+        <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text-muted);text-transform:uppercase;margin-bottom:8px">Avg Rating</div>
+        <div style="font-size:32px;font-weight:800;color:var(--accent)" id="stat-rating">0</div>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px">
+        <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text-muted);text-transform:uppercase;margin-bottom:8px">Total Reviews</div>
+        <div style="font-size:32px;font-weight:800;color:var(--accent)" id="stat-reviews">0</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Product data (sync with main store)
+const allProducts = [
+  { id:1, name:'AirDrop Pro X', cat:'Audio', code:'AU-001', icon:'🎧', price:12499, old:16699, rating:4.9, reviews:312, badge:'sale', stock:45 },
+  { id:2, name:'MechBase TKL', cat:'Input', code:'IP-002', icon:'⌨️', price:15799, old:null, rating:4.8, reviews:156, badge:'new', stock:28 },
+  { id:3, name:'LumiStrip Pro', cat:'Lighting', code:'LT-003', icon:'💡', price:6699, old:null, rating:4.7, reviews:89, badge:'hot', stock:62 },
+  { id:4, name:'MagCharge 45W', cat:'Power', code:'PW-004', icon:'🔋', price:4199, old:5849, rating:4.6, reviews:204, badge:'sale', stock:150 },
+  { id:5, name:'FocusCam 4K', cat:'Video', code:'VD-005', icon:'📷', price:9999, old:null, rating:4.9, reviews:73, badge:'new', stock:31 },
+  { id:6, name:'DeskPad XL', cat:'Input', code:'IP-006', icon:'🖱️', price:3349, old:null, rating:4.5, reviews:441, badge:null, stock:85 },
+  { id:7, name:'NanoEarPods', cat:'Audio', code:'AU-007', icon:'🎵', price:7449, old:9099, rating:4.7, reviews:198, badge:'sale', stock:54 },
+  { id:8, name:'HubCore 10-in-1', cat:'Power', code:'PW-008', icon:'🔌', price:5849, old:null, rating:4.8, reviews:117, badge:'hot', stock:39 },
+  { id:9, name:'ProStand Mag', cat:'Mobile', code:'MB-009', icon:'📱', price:2999, old:null, rating:4.6, reviews:88, badge:'new', stock:76 },
+  { id:10, name:'ArcLight Lamp', cat:'Lighting', code:'LT-010', icon:'🌙', price:8349, old:10849, rating:4.9, reviews:62, badge:'sale', stock:22 },
+  { id:11, name:'SlimCase 16', cat:'Mobile', code:'MB-011', icon:'💻', price:2499, old:null, rating:4.4, reviews:305, badge:null, stock:98 },
+  { id:12, name:'BraideX Cable', cat:'Power', code:'PW-012', icon:'⚡', price:1249, old:null, rating:4.3, reviews:520, badge:null, stock:200 },
+];
+
+function renderDataTable() {
+  const tbody = document.getElementById('data-table-body');
+  tbody.innerHTML = allProducts.map(p => {
+    const badge = p.badge ? `<span class="badge badge-${p.badge}">${p.badge}</span>` : '<span style="color:var(--text-muted)">—</span>';
+    return `
+    <tr>
+      <td style="font-family:'DM Mono',monospace;font-weight:600">${String(p.id).padStart(2,'0')}</td>
+      <td class="icon-cell">${p.icon}</td>
+      <td><strong>${p.name}</strong></td>
+      <td class="code-cell">${p.code}</td>
+      <td class="cat-cell">${p.cat}</td>
+      <td class="price-cell">₹${p.price.toLocaleString('en-IN')}</td>
+      <td style="font-family:'DM Mono',monospace">${p.stock} units</td>
+      <td>${badge}</td>
+      <td style="font-family:'DM Mono',monospace">${p.rating}★</td>
+    </tr>`;
+  }).join('');
+}
+
+function updateStats() {
+  const totalProducts = allProducts.length;
+  const totalValue = allProducts.reduce((s,p) => s + (p.price * p.stock), 0);
+  const avgRating = (allProducts.reduce((s,p) => s + p.rating, 0) / totalProducts).toFixed(1);
+  const totalReviews = allProducts.reduce((s,p) => s + p.reviews, 0);
+  
+  document.getElementById('stat-products').textContent = totalProducts;
+  document.getElementById('stat-value').textContent = '₹' + totalValue.toLocaleString('en-IN');
+  document.getElementById('stat-rating').textContent = avgRating + '★';
+  document.getElementById('stat-reviews').textContent = totalReviews.toLocaleString('en-IN');
+}
+
+renderDataTable();
+updateStats();
+</script>
+
+</body>
+</html>
